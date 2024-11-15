@@ -1,8 +1,5 @@
 import { Button } from '@mui/material';
 
-import { paths } from 'src/routes/paths';
-import { useRouter } from 'src/routes/hooks';
-
 import { toastError } from 'src/utils/format-error';
 import { bitkubNextSdk } from 'src/utils/bitkub-next';
 
@@ -17,14 +14,11 @@ export default function BitkubNextConnectButton({
   startConnecting,
   endConnecting,
 }: Props) {
-  const router = useRouter();
-
-  const handleSingInWithMetamask = async () => {
+  const handleConnect = async () => {
     if (connecting) return;
     try {
       startConnecting();
       await bitkubNextSdk.loginWithBitkubNext();
-      router.push(paths.dashboard);
     } catch (error) {
       toastError(error);
     } finally {
@@ -39,7 +33,7 @@ export default function BitkubNextConnectButton({
       fullWidth
       size="large"
       // startIcon={<Box component="img" src={iconSrc('ic_connect_metamask')} />}
-      onClick={handleSingInWithMetamask}
+      onClick={handleConnect}
     >
       Connect via Bitkub Next Wallet
     </Button>

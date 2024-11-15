@@ -1,6 +1,6 @@
 export enum LoginMethodEnum {
   BITKUBNEXT = 'bitkubnext',
-  FLOW = 'flow',
+  REOWN = 'reown',
   WEB3AUTH = 'web3auth',
   DYNAMIC = 'dynamic',
 }

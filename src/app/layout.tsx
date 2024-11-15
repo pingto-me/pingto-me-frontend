@@ -2,7 +2,7 @@
 import 'src/global.css';
 
 // ----------------------------------------------------------------------
-
+import { headers } from 'next/headers';
 import ThemeProvider from 'src/theme';
 import { primaryFont } from 'src/theme/typography';
 
@@ -12,6 +12,7 @@ import ToastProvider from 'src/components/toast';
 import { StoreProvider } from 'src/store';
 import { PropsWithChildren } from 'react';
 import { AuthProvider } from 'src/auth/context';
+import ReownProvider from 'src/context/reown-provider';
 
 // ----------------------------------------------------------------------
 
@@ -37,21 +38,24 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }: PropsWithChildren) {
+  const cookies = headers().get('cookie');
   return (
     <html lang="en" className={primaryFont.className}>
       <body>
-        <ThemeProvider>
-          <ToastProvider>
-            <StoreProvider>
-              <AuthProvider>
-                <MotionLazy>
-                  <ProgressBar />
-                  {children}
-                </MotionLazy>
-              </AuthProvider>
-            </StoreProvider>
-          </ToastProvider>
-        </ThemeProvider>
+        <ReownProvider cookies={cookies}>
+          <ThemeProvider>
+            <ToastProvider>
+              <StoreProvider>
+                <AuthProvider>
+                  <MotionLazy>
+                    <ProgressBar />
+                    {children}
+                  </MotionLazy>
+                </AuthProvider>
+              </StoreProvider>
+            </ToastProvider>
+          </ThemeProvider>
+        </ReownProvider>
       </body>
     </html>
   );

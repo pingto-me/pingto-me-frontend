@@ -1,5 +1,6 @@
 'use client';
 
+import { useDisconnect } from 'wagmi';
 import { useRef, useMemo, useState, useCallback, PropsWithChildren } from 'react';
 
 import { useBoolean } from 'src/hooks/use-boolean';
@@ -21,6 +22,8 @@ import { AuthContextType } from '../types';
 import { setSession, isValidToken } from './utils';
 
 export default function AuthProvider({ children }: PropsWithChildren) {
+  const { disconnect: disconnectWallet } = useDisconnect();
+
   // state
   const loading = useBoolean(true);
   const logingOut = useBoolean(false);
@@ -83,8 +86,14 @@ export default function AuthProvider({ children }: PropsWithChildren) {
     logingOut.onTrue();
     const loginMethod = localStorageGetItem(LOGIN_METHOD_STORAGE_KEY) as LoginMethodEnum;
 
+    console.log('loginMethod', loginMethod);
+
     if (loginMethod === LoginMethodEnum.BITKUBNEXT) {
       await bitkubNextSdk.logout();
+    }
+
+    if (loginMethod === LoginMethodEnum.REOWN) {
+      disconnectWallet();
     }
 
     setSession(null, null);
@@ -93,7 +102,7 @@ export default function AuthProvider({ children }: PropsWithChildren) {
     window.location.reload();
     await sleep(500);
     logingOut.onFalse();
-  }, [logingOut]);
+  }, [logingOut, disconnectWallet]);
 
   const checkAuthenticated = userState ? 'authenticated' : 'unauthenticated';
 
