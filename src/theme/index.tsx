@@ -28,9 +28,9 @@ type Props = {
 };
 
 export default function ThemeProvider({ children }: Props) {
-  const contrast = createContrast('default', 'dark');
+  const contrast = createContrast('default', 'light');
 
-  const customPalette = palette('dark');
+  const customPalette = palette('light');
 
   const memoizedValue = useMemo(
     () => ({
@@ -39,11 +39,11 @@ export default function ThemeProvider({ children }: Props) {
         ...contrast.palette,
       },
       customShadows: {
-        ...customShadows('dark'),
+        ...customShadows('light'),
         primary: `0 8px 16px 0 ${alpha(`${customPalette.primary.main}`, 0.24)}`,
       },
       direction: 'ltr',
-      shadows: shadows('dark'),
+      shadows: shadows('light'),
       shape: { borderRadius: 12 },
       typography,
     }),

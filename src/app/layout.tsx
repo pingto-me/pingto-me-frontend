@@ -12,7 +12,8 @@ import ToastProvider from 'src/components/toast';
 import { StoreProvider } from 'src/store';
 import { PropsWithChildren } from 'react';
 import { AuthProvider } from 'src/auth/context';
-import ReownProvider from 'src/context/reown-provider';
+import DynamicProvider from 'src/context/dynamic-provider';
+import Web3AuthProvider from 'src/context/web3auth/web3auth-provider';
 
 // ----------------------------------------------------------------------
 
@@ -42,20 +43,24 @@ export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en" className={primaryFont.className}>
       <body>
-        <ReownProvider cookies={cookies}>
-          <ThemeProvider>
-            <ToastProvider>
-              <StoreProvider>
-                <AuthProvider>
-                  <MotionLazy>
-                    <ProgressBar />
-                    {children}
-                  </MotionLazy>
-                </AuthProvider>
-              </StoreProvider>
-            </ToastProvider>
-          </ThemeProvider>
-        </ReownProvider>
+        {/* <ReownProvider cookies={cookies}> */}
+        <DynamicProvider>
+          <Web3AuthProvider>
+            <ThemeProvider>
+              <ToastProvider>
+                <StoreProvider>
+                  <AuthProvider>
+                    <MotionLazy>
+                      <ProgressBar />
+                      {children}
+                    </MotionLazy>
+                  </AuthProvider>
+                </StoreProvider>
+              </ToastProvider>
+            </ThemeProvider>
+          </Web3AuthProvider>
+        </DynamicProvider>
+        {/* </ReownProvider> */}
       </body>
     </html>
   );

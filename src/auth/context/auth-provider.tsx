@@ -1,6 +1,7 @@
 'use client';
 
-import { useDisconnect } from 'wagmi';
+import { useDynamicContext } from '@dynamic-labs/sdk-react-core';
+// import { useDisconnect } from 'wagmi';
 import { useRef, useMemo, useState, useCallback, PropsWithChildren } from 'react';
 
 import { useBoolean } from 'src/hooks/use-boolean';
@@ -22,7 +23,8 @@ import { AuthContextType } from '../types';
 import { setSession, isValidToken } from './utils';
 
 export default function AuthProvider({ children }: PropsWithChildren) {
-  const { disconnect: disconnectWallet } = useDisconnect();
+  // const { disconnect: disconnectWallet } = useDisconnect();
+  const { handleLogOut } = useDynamicContext();
 
   // state
   const loading = useBoolean(true);
@@ -93,7 +95,12 @@ export default function AuthProvider({ children }: PropsWithChildren) {
     }
 
     if (loginMethod === LoginMethodEnum.REOWN) {
-      disconnectWallet();
+      // disconnectWallet();
+    }
+
+    if (loginMethod === LoginMethodEnum.DYNAMIC) {
+      // disconnectWallet();
+      await handleLogOut();
     }
 
     setSession(null, null);
@@ -102,7 +109,7 @@ export default function AuthProvider({ children }: PropsWithChildren) {
     window.location.reload();
     await sleep(500);
     logingOut.onFalse();
-  }, [logingOut, disconnectWallet]);
+  }, [logingOut, handleLogOut]);
 
   const checkAuthenticated = userState ? 'authenticated' : 'unauthenticated';
 
