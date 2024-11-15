@@ -33,3 +33,9 @@ const onSnackbarAction = (color: VariantType) => {
   });
 };
 ```
+
+export const sdk = initializeSDK(
+"6737009c5f02f9001be0e54a", // Client ID
+"sdk-1f89618b-24c5-478e-ac4f-1fa7465591b3", // Project ID
+Network.BKC_TESTNET,
+);

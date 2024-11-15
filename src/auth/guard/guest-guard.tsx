@@ -8,7 +8,7 @@ import { PATH_AFTER_LOGIN } from 'src/config-global';
 
 import { SplashScreen } from 'src/components/loading-screen';
 
-import { useTonContext } from '../ton/hooks';
+import { useAuthContext } from '../hooks';
 
 // ----------------------------------------------------------------------
 
@@ -17,7 +17,7 @@ type Props = {
 };
 
 export default function GuestGuard({ children }: Props) {
-  const { loading } = useTonContext();
+  const { loading } = useAuthContext();
 
   return <>{loading ? <SplashScreen /> : <Container>{children}</Container>}</>;
 }
@@ -31,7 +31,7 @@ function Container({ children }: Props) {
 
   const returnTo = searchParams.get('returnTo') || PATH_AFTER_LOGIN;
 
-  const { authenticated } = useTonContext();
+  const { authenticated } = useAuthContext();
 
   const check = useCallback(() => {
     if (authenticated) {

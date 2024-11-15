@@ -1,30 +1,18 @@
 'use client';
 
-import { Stack, Button, Container } from '@mui/material';
+import { Stack, Container } from '@mui/material';
 
-import { paths } from 'src/routes/paths';
-import { RouterLink } from 'src/routes/components';
-
-import DashboardStats from '../dashboard-stats';
-import DashboardMainMenu from '../dashboard-main-menu';
-import DashboardUserCard from '../dashboard-user-card';
+import { useAuthContext } from 'src/auth/hooks';
 
 export default function DashboardView() {
+  const { disconnect } = useAuthContext();
+
   return (
     <Container maxWidth="xs">
       <Stack spacing={3} pb={3}>
-        <DashboardUserCard />
-        <Button
-          component={RouterLink}
-          href={paths.report}
-          variant="contained"
-          color="primary"
-          size="large"
-        >
-          Report
-        </Button>
-        <DashboardMainMenu />
-        <DashboardStats />
+        <button type="button" onClick={() => disconnect()}>
+          disconnect
+        </button>
       </Stack>
     </Container>
   );

@@ -2,10 +2,10 @@
 
 import { createContext } from 'react';
 
-import { TonContextType } from '../types';
+import { AuthContextType } from '../types';
 
 // ----------------------------------------------------------------------
 
-const TonContext = createContext({} as TonContextType);
+const AuthContext = createContext({} as AuthContextType);
 
-export default TonContext;
+export default AuthContext;

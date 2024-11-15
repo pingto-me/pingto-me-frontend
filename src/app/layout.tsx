@@ -10,9 +10,8 @@ import ProgressBar from 'src/components/progress-bar';
 import { MotionLazy } from 'src/components/animate/motion-lazy';
 import ToastProvider from 'src/components/toast';
 import { StoreProvider } from 'src/store';
-import LayoutPresence from 'src/components/animate/transitions/layout-presence';
 import { PropsWithChildren } from 'react';
-import { TonProvider } from 'src/auth/ton/context';
+import { AuthProvider } from 'src/auth/context';
 
 // ----------------------------------------------------------------------
 
@@ -43,15 +42,14 @@ export default function RootLayout({ children }: PropsWithChildren) {
       <body>
         <ThemeProvider>
           <ToastProvider>
-            <TonProvider>
-              <StoreProvider>
+            <StoreProvider>
+              <AuthProvider>
                 <MotionLazy>
                   <ProgressBar />
-                  <LayoutPresence>{children}</LayoutPresence>
+                  {children}
                 </MotionLazy>
-              </StoreProvider>
-            </TonProvider>
-            \
+              </AuthProvider>
+            </StoreProvider>
           </ToastProvider>
         </ThemeProvider>
       </body>

@@ -7,7 +7,7 @@ import { useRouter } from 'src/routes/hooks';
 
 import { SplashScreen } from 'src/components/loading-screen';
 
-import { useTonContext } from '../ton/hooks';
+import { useAuthContext } from '../hooks';
 
 // ----------------------------------------------------------------------
 
@@ -16,7 +16,7 @@ type Props = {
 };
 
 export default function AuthGuard({ children }: Props) {
-  const { loading } = useTonContext();
+  const { loading } = useAuthContext();
 
   return <>{loading ? <SplashScreen /> : <Container>{children}</Container>}</>;
 }
@@ -26,7 +26,7 @@ export default function AuthGuard({ children }: Props) {
 function Container({ children }: Props) {
   const router = useRouter();
 
-  const { authenticated } = useTonContext();
+  const { authenticated } = useAuthContext();
 
   const [checked, setChecked] = useState(false);
 

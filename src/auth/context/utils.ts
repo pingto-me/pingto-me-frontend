@@ -3,7 +3,9 @@ import { paths } from 'src/routes/paths';
 import axios from 'src/utils/axios';
 import { localStorageSetItem, localStorageRemoveItem } from 'src/utils/storage-available';
 
-import { ACCESS_TOKEN_STORAGE_KEY } from 'src/config-global';
+import { ACCESS_TOKEN_STORAGE_KEY, LOGIN_METHOD_STORAGE_KEY } from 'src/config-global';
+
+import { LoginMethodEnum } from 'src/types/login-method.enum';
 
 // ----------------------------------------------------------------------
 
@@ -60,15 +62,17 @@ export const tokenExpired = (exp: number) => {
 
 // ----------------------------------------------------------------------
 
-export const setSession = (accessToken: string | null) => {
-  if (accessToken) {
+export const setSession = (accessToken: string | null, loginMethod: LoginMethodEnum | null) => {
+  if (accessToken && loginMethod) {
     localStorageSetItem(ACCESS_TOKEN_STORAGE_KEY, accessToken);
+    localStorageSetItem(LOGIN_METHOD_STORAGE_KEY, loginMethod as string);
     axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
 
     const { exp } = jwtDecode(accessToken);
     tokenExpired(exp);
   } else {
     localStorageRemoveItem(ACCESS_TOKEN_STORAGE_KEY);
+    localStorageRemoveItem(LOGIN_METHOD_STORAGE_KEY);
     delete axios.defaults.headers.common.Authorization;
   }
 };
