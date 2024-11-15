@@ -1,0 +1,12 @@
+default:
+  image: node:20.10.0
+
+deploy-dev:
+  stage: deploy
+  script:
+    - npm install --global vercel
+    - mkdir -p .vercel && echo '{"orgId":"'$TRYDEV_VERCEL_ORG_ID'","projectId":"'$TRYDEV_VERCEL_PROJECT_ID'"}' > .vercel/project.json
+    - cp .env.example .env
+    - vercel --token $TRYDEV_VERCEL_TOKEN --prod
+  only:
+    - deploy-dev
