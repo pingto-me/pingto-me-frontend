@@ -38,7 +38,7 @@ export function button(theme: Theme) {
       ...(inheritColor && {
         // CONTAINED
         ...(containedVariant && {
-          color: lightMode ? theme.palette.common.black : theme.palette.common.white,
+          color: lightMode ? theme.palette.common.white : theme.palette.common.white,
           backgroundColor: lightMode ? theme.palette.grey[800] : theme.palette.common.black,
           '&:hover': {
             backgroundColor: lightMode ? theme.palette.grey[700] : theme.palette.common.black,

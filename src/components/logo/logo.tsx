@@ -15,11 +15,7 @@ const Logo = forwardRef<HTMLDivElement, LogoProps>(({ disabledLink = false, sx }
   // OR using local (public folder)
   // -------------------------------------------------------
   const logo = (
-    <Box
-      component="img"
-      src="/assets/logos/callverz.svg"
-      sx={{ width: 30, height: 30, cursor: 'pointer', ...sx }}
-    />
+    <Box component="img" src="/assets/logos/PINGTOME.svg" sx={{ cursor: 'pointer', ...sx }} />
   );
 
   if (disabledLink) {

@@ -13,7 +13,6 @@ import { StoreProvider } from 'src/store';
 import { PropsWithChildren } from 'react';
 import { AuthProvider } from 'src/auth/context';
 import DynamicProvider from 'src/context/dynamic-provider';
-import Web3AuthProvider from 'src/context/web3auth/web3auth-provider';
 
 // ----------------------------------------------------------------------
 
@@ -45,20 +44,20 @@ export default function RootLayout({ children }: PropsWithChildren) {
       <body>
         {/* <ReownProvider cookies={cookies}> */}
         <DynamicProvider>
-          <Web3AuthProvider>
-            <ThemeProvider>
-              <ToastProvider>
-                <StoreProvider>
-                  <AuthProvider>
-                    <MotionLazy>
-                      <ProgressBar />
-                      {children}
-                    </MotionLazy>
-                  </AuthProvider>
-                </StoreProvider>
-              </ToastProvider>
-            </ThemeProvider>
-          </Web3AuthProvider>
+          {/* <Web3AuthProvider> */}
+          <ThemeProvider>
+            <ToastProvider>
+              <StoreProvider>
+                <AuthProvider>
+                  <MotionLazy>
+                    <ProgressBar />
+                    {children}
+                  </MotionLazy>
+                </AuthProvider>
+              </StoreProvider>
+            </ToastProvider>
+          </ThemeProvider>
+          {/* </Web3AuthProvider> */}
         </DynamicProvider>
         {/* </ReownProvider> */}
       </body>

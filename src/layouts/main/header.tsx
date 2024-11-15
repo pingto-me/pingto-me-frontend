@@ -1,6 +1,6 @@
 import Box from '@mui/material/Box';
+import { Stack } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
-import { IconButton } from '@mui/material';
 import Toolbar from '@mui/material/Toolbar';
 import { useTheme } from '@mui/material/styles';
 import Container from '@mui/material/Container';
@@ -10,10 +10,10 @@ import { useRouter, usePathname } from 'src/routes/hooks';
 
 import { useOffSetTop } from 'src/hooks/use-off-set-top';
 
-import { iconSrc } from 'src/utils/icon';
-
 import { bgBlur } from 'src/theme/css';
 import { useAppSelector } from 'src/store';
+
+import Logo from 'src/components/logo';
 
 import { HEADER } from '../config-layout';
 
@@ -50,22 +50,34 @@ export default function Header() {
           }),
         }}
       >
-        <Container
-          maxWidth="xs"
-          sx={{ height: 1, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
-        >
-          {pathname !== '/dashboard/' && (
-            <>
-              <Box sx={{ width: 50 }}>
-                <IconButton onClick={() => router.back()} sx={{ px: 0 }}>
-                  <Box component="img" src={iconSrc('ic_arrow_left')} />
-                </IconButton>
-              </Box>
-              <Typography fontWeight={700}>{pageTitle}</Typography>
+        <Container sx={{ height: 1, display: 'flex', alignItems: 'center' }}>
+          <Logo />
 
-              <Box sx={{ width: 50 }} />
-            </>
-          )}
+          <Box sx={{ flexGrow: 1 }} />
+
+          <Stack
+            component="nav"
+            direction="row"
+            alignItems="center"
+            spacing={5}
+            sx={{ mr: 2.5, height: 1 }}
+          >
+            <Typography variant="body2" sx={{ color: 'text.primary' }}>
+              Dashboard
+            </Typography>
+
+            <Typography variant="body2" sx={{ color: 'text.primary' }}>
+              Profile
+            </Typography>
+
+            <Typography variant="body2" sx={{ color: 'text.primary' }}>
+              NFTs
+            </Typography>
+
+            <Typography variant="body2" sx={{ color: 'text.primary' }}>
+              Cards
+            </Typography>
+          </Stack>
         </Container>
       </Toolbar>
     </AppBar>
