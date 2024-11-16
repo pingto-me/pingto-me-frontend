@@ -2,7 +2,7 @@
 
 import { useDynamicContext } from '@dynamic-labs/sdk-react-core';
 // import { useDisconnect } from 'wagmi';
-import { useRef, useMemo, useState, useCallback, PropsWithChildren } from 'react';
+import { useMemo, useState, useCallback, PropsWithChildren } from 'react';
 
 import { useBoolean } from 'src/hooks/use-boolean';
 import { useDeepEffect } from 'src/hooks/use-deep-effect';
@@ -32,7 +32,6 @@ export default function AuthProvider({ children }: PropsWithChildren) {
   const [userState, setUserState] = useState<any | null>(null);
 
   // interval
-  const interval = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const initialize = useCallback(async () => {
     try {
@@ -43,45 +42,26 @@ export default function AuthProvider({ children }: PropsWithChildren) {
 
       if (accessToken && isValidToken(accessToken)) {
         loading.onTrue();
+        console.log({ accessToken, loginMethod });
         setSession(accessToken, loginMethod);
 
-        const { data } = await axios.get('/api/auth/me');
-        const { user } = data;
+        const { data } = await axios.get('/users/me');
 
-        setUserState(user);
+        setUserState(data);
         loading.onFalse();
-        // if (interval.current) {
-        //   clearInterval(interval.current);
-        //   interval.current = null;
-        // }
       } else {
+        console.log('error');
         setUserState(null);
         loading.onFalse();
       }
     } catch (error) {
       console.error(error);
       setUserState(null);
-
-      // if (interval.current) {
-      //   clearInterval(interval.current);
-      //   interval.current = null;
-      // }
     }
   }, [loading]);
 
   useDeepEffect(() => {
     initialize();
-
-    // interval.current = setInterval(() => {
-    //   initialize();
-    // }, 2000);
-
-    // return () => {
-    //   if (interval.current) {
-    //     clearInterval(interval.current);
-    //     interval.current = null;
-    //   }
-    // };
   }, []);
 
   const connect = useCallback(async () => {}, []);
@@ -92,16 +72,14 @@ export default function AuthProvider({ children }: PropsWithChildren) {
 
     console.log('loginMethod', loginMethod);
 
-    if (loginMethod === LoginMethodEnum.BITKUBNEXT) {
+    if (
+      loginMethod === LoginMethodEnum.BITKUBNEXT &&
+      (await bitkubNextSdk.loginStatus()) === 'CONNECTED'
+    ) {
       await bitkubNextSdk.logout();
     }
 
-    if (loginMethod === LoginMethodEnum.REOWN) {
-      // disconnectWallet();
-    }
-
     if (loginMethod === LoginMethodEnum.DYNAMIC) {
-      // disconnectWallet();
       await handleLogOut();
     }
 

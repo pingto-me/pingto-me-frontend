@@ -4,6 +4,7 @@ import { Grid, Stack, Button, Container, Typography } from '@mui/material';
 
 import { RouterLink } from 'src/routes/components';
 
+import { bitkubNextSdk } from 'src/utils/bitkub-next';
 import { localStorageGetItem } from 'src/utils/storage-available';
 
 import { useAuthContext } from 'src/auth/hooks';
@@ -11,6 +12,12 @@ import { LOGIN_METHOD_STORAGE_KEY } from 'src/config-global';
 
 export default function DashboardView() {
   const { disconnect } = useAuthContext();
+
+  const logUser = async () => {
+    const userInfo = await bitkubNextSdk.getUserInfo();
+    const balance = await bitkubNextSdk.getBalanceNative();
+    console.log({ userInfo, balance });
+  };
 
   const loginMethod = localStorageGetItem(LOGIN_METHOD_STORAGE_KEY);
 
@@ -79,6 +86,9 @@ export default function DashboardView() {
       <br />
       <Stack spacing={3} pb={3}>
         connect with {loginMethod}
+        <button type="button" onClick={() => logUser()}>
+          logUser
+        </button>
         <button type="button" onClick={() => disconnect()}>
           disconnect
         </button>
