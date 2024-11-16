@@ -1,3 +1,5 @@
+import NFTsListView from 'src/sections/nfts/view/nfts-list-view';
+
 export default function Page() {
-  return <div>NFT Gallory</div>;
+  return <NFTsListView />;
 }

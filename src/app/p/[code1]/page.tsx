@@ -1,3 +1,9 @@
+'use client';
+
+import { Stack, Container } from '@mui/material';
+
+import { CardProfile } from 'src/components/ui-kit/card-profile';
+
 type Props = {
   params: {
     code1: string;
@@ -6,5 +12,11 @@ type Props = {
 
 export default function Page({ params }: Props) {
   const { code1 } = params;
-  return <div>{code1}</div>;
+  return (
+    <Container>
+      <Stack pt={3} justifyContent="center" alignItems="center">
+        <CardProfile />
+      </Stack>
+    </Container>
+  );
 }

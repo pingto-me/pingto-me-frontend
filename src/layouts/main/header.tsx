@@ -48,7 +48,7 @@ export default function Header() {
     { label: 'Dashboard', path: paths.dashboard },
     { label: 'Profile', path: `/p/${1234}` },
     { label: 'NFTs', path: '/nft-gallory' },
-    { label: 'Cards', path: '/cards' },
+    { label: 'Cards', path: '/card' },
     { label: 'World', path: '/world' },
   ];
 
