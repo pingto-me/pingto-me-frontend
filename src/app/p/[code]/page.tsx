@@ -8,12 +8,12 @@ import ProfileEditView from 'src/sections/profile/view/profile-edit-view';
 
 type Props = {
   params: {
-    code1: string;
+    code: string;
   };
 };
 
 export default function Page({ params }: Props) {
-  const { code1 } = params;
+  const { code } = params;
   return (
     <Container>
       <Stack pt={3} justifyContent="center" alignItems="center">
@@ -22,7 +22,7 @@ export default function Page({ params }: Props) {
 
       <br />
       <Divider />
-      <ProfileEditView id={code1} />
+      <ProfileEditView id={code} />
     </Container>
   );
 }
