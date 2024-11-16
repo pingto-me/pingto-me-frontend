@@ -6,7 +6,7 @@ import { enqueueSnackbar } from 'notistack';
 import Container from '@mui/material/Container';
 
 import { paths } from 'src/routes/paths';
-import { useRouter } from 'src/routes/hooks';
+import { useRouter, useSearchParams } from 'src/routes/hooks';
 
 import { useBoolean } from 'src/hooks/use-boolean';
 import { useDeepEffect } from 'src/hooks/use-deep-effect';
@@ -14,10 +14,11 @@ import { useDeepEffect } from 'src/hooks/use-deep-effect';
 import { fError } from 'src/utils/format-error';
 
 import { LoadingScreen } from 'src/components/loading-screen';
+import { CardProfile } from 'src/components/ui-kit/card-profile';
 
 import { IProfileItem, ProfileIconEnum, IProfileItemFormValue } from 'src/types/profile';
 
-import ProfileNewEditForm from '../profile-new-edit-form';
+import PrintForm from '../print-form';
 
 type Props = {
   id: string;
@@ -39,11 +40,15 @@ const mockProfileItem: IProfileItem = {
   icon: ProfileIconEnum.SKILLS,
 };
 
-export default function ProfileEditView({ id }: Props) {
+export default function PrintView({ id }: Props) {
   const [currentValue, setCurrentValue] = useState<IProfileItem>();
   const initialize = useBoolean(true);
   const forceUpdate = useBoolean();
   const router = useRouter();
+
+  const searchParams = useSearchParams();
+
+  const type = searchParams.get('type');
 
   useDeepEffect(() => {
     (async () => {
@@ -79,10 +84,12 @@ export default function ProfileEditView({ id }: Props) {
       {initialize.value ? (
         <LoadingScreen sx={{ pt: 16 }} />
       ) : (
-        <ProfileNewEditForm
+        <PrintForm
           currentValue={currentValue}
+          type={type}
           forceUpdate={forceUpdate.onToggle}
           submitCallback={onSubmit}
+          cardComponent={<CardProfile />}
         />
       )}
     </Container>
