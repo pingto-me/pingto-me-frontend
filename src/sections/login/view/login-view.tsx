@@ -8,6 +8,7 @@ import { bitkubNextSdk } from 'src/utils/bitkub-next';
 
 import { CenterStack } from 'src/components/box';
 
+import DynamicConnectgitButton from '../dynamic-connect-wallet';
 import BitkubNextConnectButton from '../bitkub-next-connect-button';
 
 export default function LoginView() {
@@ -39,7 +40,7 @@ export default function LoginView() {
       </CenterStack>
       <CenterStack spacing={1} width={1} maxWidth={380}>
         <BitkubNextConnectButton {...connectingProps} />
-        {/* <DynamicConnectButton {...connectingProps} /> */}
+        <DynamicConnectgitButton {...connectingProps} />
 
         <button type="button" onClick={() => bitkubNextSdk.logout()}>
           bitkub disconnect
