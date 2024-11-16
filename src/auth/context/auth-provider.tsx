@@ -1,7 +1,9 @@
 'use client';
 
+import { useDisconnect } from 'wagmi';
 // import { useDisconnect } from 'wagmi';
 import { useMemo, useState, useCallback, PropsWithChildren } from 'react';
+import { useIsLoggedIn, useDynamicContext } from '@dynamic-labs/sdk-react-core';
 
 import { useBoolean } from 'src/hooks/use-boolean';
 import { useDeepEffect } from 'src/hooks/use-deep-effect';
@@ -22,9 +24,9 @@ import { AuthContextType } from '../types';
 import { setSession, isValidToken } from './utils';
 
 export default function AuthProvider({ children }: PropsWithChildren) {
-  // const { disconnect: disconnectWallet } = useDisconnect();
-  // const { handleLogOut } = useDynamicContext();
-  // const isLoggedIn = useIsLoggedIn();
+  const { disconnect: disconnectWallet } = useDisconnect();
+  const { handleLogOut } = useDynamicContext();
+  const isLoggedIn = useIsLoggedIn();
   // state
   const loading = useBoolean(true);
   const logingOut = useBoolean(false);
@@ -75,10 +77,11 @@ export default function AuthProvider({ children }: PropsWithChildren) {
       await bitkubNextSdk.logout();
     }
 
-    // console.log({ isLoggedIn });
-    // if (isLoggedIn) {
-    //   await handleLogOut();
-    // }
+    console.log({ isLoggedIn });
+    if (isLoggedIn) {
+      await handleLogOut();
+      disconnectWallet();
+    }
 
     setSession(null, null);
     setUserState(null);
@@ -86,7 +89,7 @@ export default function AuthProvider({ children }: PropsWithChildren) {
     window.location.reload();
     await sleep(500);
     logingOut.onFalse();
-  }, [logingOut]);
+  }, [logingOut, handleLogOut, isLoggedIn, disconnectWallet]);
 
   const checkAuthenticated = userState ? 'authenticated' : 'unauthenticated';
 

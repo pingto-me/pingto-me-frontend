@@ -1,50 +1,56 @@
+'use client';
+
 import * as Yup from 'yup';
-import { capitalize } from 'lodash';
 import { useForm } from 'react-hook-form';
 import { enqueueSnackbar } from 'notistack';
-import { useMemo, useCallback } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useMemo, useEffect, useCallback } from 'react';
 
-import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Unstable_Grid2';
-import { Avatar, useTheme } from '@mui/material';
 import Typography from '@mui/material/Typography';
-import LoadingButton from '@mui/lab/LoadingButton';
+import { Box, Button, useTheme } from '@mui/material';
 
 import { useRouter } from 'src/routes/hooks';
 
-import { fData } from 'src/utils/format-number';
 import { fError } from 'src/utils/format-error';
 
-import Iconify from 'src/components/iconify';
-import { CardProfile } from 'src/components/ui-kit/card-profile';
-import { RHFUploadAvatar } from 'src/components/hook-form/rhf-upload';
-import FormProvider, { RHFTextField, RHFRadioGroup } from 'src/components/hook-form';
+import FormProvider from 'src/components/hook-form';
+// import { CardProfile } from 'src/components/cards/card-profile';
 
+import { localStorageGetItem } from 'src/utils/storage-available';
+
+import { LOGIN_METHOD_STORAGE_KEY } from 'src/config-global';
+
+import { LoginMethodEnum } from 'src/types/login-method.enum';
 import { IProfileItem, ProfileIconEnum, IProfileItemFormValue } from 'src/types/profile';
 
-// ----------------------------------------------------------------------
-// TODO mock
-const bgImgMock = [
-  'https://image.coinpedia.org/app_uploads/events/1718794499690d9dg2c2lwt.webp',
-  'https://picsum.photos/210',
-  'https://picsum.photos/220',
-  'https://picsum.photos/230',
-  'https://picsum.photos/240',
-];
+import PaymentInfoCard from './components/paymentInfo-card';
+import ConfigurationsCard from './components/configurations-form';
+import PaymentWithBitkubButton from './components/payment-with-bitkub-button';
+
 // ----------------------------------------------------------------------
 
 type Props = {
   currentValue?: IProfileItem;
+  type: string | null;
   forceUpdate: VoidFunction;
   submitCallback: (formValue: IProfileItemFormValue) => Promise<IProfileItem>;
+  cardComponent?: any;
 };
 
-export default function ProfileNewEditForm({ currentValue, forceUpdate, submitCallback }: Props) {
+export default function PrintForm({
+  currentValue,
+  type,
+  forceUpdate,
+  submitCallback,
+  cardComponent,
+}: Props) {
+  const theme = useTheme();
   const router = useRouter();
 
-  const theme = useTheme();
+  const loginMethod = localStorageGetItem(LOGIN_METHOD_STORAGE_KEY) as LoginMethodEnum;
+
   const YupSchema = Yup.object().shape({
     profileImage: Yup.mixed<any>(),
     backgroundImage: Yup.mixed<any>(),
@@ -78,12 +84,15 @@ export default function ProfileNewEditForm({ currentValue, forceUpdate, submitCa
   const {
     reset,
     setValue,
-    watch,
     handleSubmit,
     formState: { isSubmitting, isDirty },
   } = methods;
 
-  const currentBgImg = watch('backgroundImage');
+  useEffect(() => {
+    // if (!type) {
+    //   router.replace(paths.root);
+    // }
+  }, [router, type]);
 
   const onSubmit = handleSubmit(async (data) => {
     try {
@@ -97,11 +106,10 @@ export default function ProfileNewEditForm({ currentValue, forceUpdate, submitCa
       //     formValue.photoURL = fileUrl;
       //   }
       // }
-      router.push(`/print/1234`);
-      // await submitCallback(data);
-      // reset(data, { keepDirty: false });
-      // forceUpdate();
-      // enqueueSnackbar(currentValue ? 'Update success!' : 'Create success!', { variant: 'success' });
+      await submitCallback(data);
+      reset(data, { keepDirty: false });
+      forceUpdate();
+      enqueueSnackbar(currentValue ? 'Update success!' : 'Create success!', { variant: 'success' });
     } catch (error) {
       const err = fError(error);
       enqueueSnackbar(err);
@@ -125,88 +133,25 @@ export default function ProfileNewEditForm({ currentValue, forceUpdate, submitCa
 
   return (
     <FormProvider methods={methods} onSubmit={onSubmit}>
-      <Stack textAlign="center" px={2} py={3}>
-        <Typography variant="h4" color="text.primary" sx={{ pb: 2 }}>
-          Your Profile
+      <Stack textAlign="start" px={2} pt={3}>
+        <Typography variant="h4" color="text.primary" sx={{ pb: 0.5 }}>
+          Print to Card
         </Typography>
         <Typography variant="body2" color="text.secondary" sx={{ pb: 2 }}>
-          Update your profile to share to the public.
+          Review the information of your card before payment.
         </Typography>
       </Stack>
 
-      <Grid container spacing={6} px={2} py={3}>
+      <Grid container spacing={4} px={2} py={3}>
+        <Grid xs={12} md={4}>
+          <Typography variant="h6" color="text.secondary" sx={{ pb: 2 }}>
+            Preview
+          </Typography>
+          {cardComponent}
+        </Grid>
+        {/*
         <Grid xs={12} md={8}>
-          <Box sx={{ mb: 5 }}>
-            <RHFUploadAvatar
-              name="profileImage"
-              maxSize={3145728}
-              onDrop={handleDrop}
-              helperText={
-                <Typography
-                  variant="caption"
-                  sx={{
-                    mt: 3,
-                    mx: 'auto',
-                    display: 'block',
-                    textAlign: 'center',
-                    color: 'text.disabled',
-                  }}
-                >
-                  Allowed *.jpeg, *.jpg, *.png, *.gif
-                  <br /> max size of {fData(3145728)}
-                </Typography>
-              }
-            />
-          </Box>
-
           <Stack sx={{ mt: 3 }} spacing={3}>
-            <Stack direction="row" flexWrap="wrap" spacing={2}>
-              {bgImgMock.map((item, index) => (
-                <Avatar
-                  key={index}
-                  src={item}
-                  sx={{
-                    borderRadius: 1,
-                    height: 64,
-                    width: 64,
-                    cursor: 'pointer',
-                    transition: 'all 0.15s',
-                    '&:hover': {
-                      outline: `2px solid ${theme.palette.primary.light}`,
-                    },
-                    // TODO change condition later
-                    ...(item === currentBgImg && {
-                      outline: `2px solid ${theme.palette.primary.main}`,
-                    }),
-                  }}
-                />
-              ))}
-              <Stack
-                justifyContent="center"
-                alignItems="center"
-                sx={{
-                  borderRadius: 1,
-                  height: 64,
-                  width: 64,
-                  bgcolor: '#919EAB14',
-                  border: '1px dashed #919EAB33',
-                  cursor: 'pointer',
-                  transition: 'all 0.15s',
-                  '&:hover': {
-                    bgcolor: '#919eab39',
-                    border: '1px dashed #919eab4d',
-                  },
-                }}
-              >
-                <Iconify
-                  icon="eva:cloud-upload-fill"
-                  width={28}
-                  height={28}
-                  sx={{ color: '#919EAB' }}
-                />
-              </Stack>
-            </Stack>
-
             <RHFTextField name="name" label="Name" placeholder="Enter name.." />
             <RHFTextField name="position" label="Position" placeholder="Enter position.." />
 
@@ -242,18 +187,70 @@ export default function ProfileNewEditForm({ currentValue, forceUpdate, submitCa
           </Stack>
 
           <Stack alignItems="flex-start" sx={{ mt: 3 }}>
-            <LoadingButton type="submit" variant="contained" color="primary" loading={isSubmitting}>
+            <LoadingButton
+              type="submit"
+              variant="contained"
+              color="primary"
+              loading={isSubmitting}
+              disabled={!isDirty}
+            >
               Save
             </LoadingButton>
           </Stack>
-        </Grid>
+        </Grid> */}
 
-        <Grid xs={12} md={4}>
-          <Typography variant="h6" color="text.secondary" sx={{ pb: 2 }}>
-            Preview
+        <Grid xs={12} md={8}>
+          <Typography variant="h6" sx={{ mb: 1 }}>
+            Configurations
           </Typography>
-          {/* <Card sx={{ py: 24, px: 3 }}>Preview card</Card> */}
-          <CardProfile />
+          <ConfigurationsCard />
+          {/* Header */}
+          <Typography variant="h6" sx={{ mb: 2, mt: 2 }}>
+            Payment Information
+          </Typography>
+          <PaymentInfoCard />
+
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'flex-end',
+              alignItems: 'center',
+              gap: 2,
+              mt: 3,
+            }}
+          >
+            {/* Confirm and Create Order Button */}
+            {/* <Button
+              variant="contained"
+              sx={{
+                backgroundColor: '#212B36',
+                color: '#FFFFFF',
+                textTransform: 'none',
+                '&:hover': {
+                  backgroundColor: '#1A222B',
+                },
+              }}
+            >
+              Confirm and Create order
+            </Button> */}
+
+            {loginMethod === LoginMethodEnum.BITKUBNEXT && <PaymentWithBitkubButton />}
+
+            {/* Proceed Button */}
+            <Button
+              variant="contained"
+              sx={{
+                backgroundColor: '#8DF5C0',
+                color: '#000000',
+                textTransform: 'none',
+                '&:hover': {
+                  backgroundColor: '#7AE6B0',
+                },
+              }}
+            >
+              Proceed
+            </Button>
+          </Box>
         </Grid>
       </Grid>
     </FormProvider>
