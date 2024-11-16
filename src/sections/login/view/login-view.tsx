@@ -4,8 +4,6 @@ import { Typography } from '@mui/material';
 
 import { useBoolean } from 'src/hooks/use-boolean';
 
-import { bitkubNextSdk } from 'src/utils/bitkub-next';
-
 import { CenterStack } from 'src/components/box';
 
 import DynamicConnectgitButton from '../dynamic-connect-wallet';
@@ -42,9 +40,9 @@ export default function LoginView() {
         <BitkubNextConnectButton {...connectingProps} />
         <DynamicConnectgitButton {...connectingProps} />
 
-        <button type="button" onClick={() => bitkubNextSdk.logout()}>
+        {/* <button type="button" onClick={() => bitkubNextSdk.logout()}>
           bitkub disconnect
-        </button>
+        </button> */}
       </CenterStack>
     </CenterStack>
   );
