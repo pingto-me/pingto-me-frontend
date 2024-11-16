@@ -62,7 +62,7 @@ type Props = CardProps & {
   user?: User;
   backgroundImage?: string;
   description?: string;
-  linkQrcode?: string;
+  qrCodeValue: string;
   certified?: boolean;
 };
 
@@ -70,19 +70,31 @@ export function CardProfile({
   user,
   backgroundImage,
   description,
-  linkQrcode,
+  qrCodeValue,
   certified = true,
   sx,
   ...other
 }: Props) {
   return (
-    <Card sx={{ position: 'relative', textAlign: 'center', width: '328px', ...sx }} {...other}>
+    <Card
+      sx={{ position: 'relative', textAlign: 'center', width: '350px', height: '600px', ...sx }}
+      {...other}
+    >
       {certified && (
-        <Box sx={{ position: 'absolute', zIndex: 10, top: 10, right: 10 }}>
+        <Box sx={{ position: 'absolute', zIndex: 10, top: 16, right: 10 }}>
           <CertifiedBadge />
         </Box>
       )}
-      <Box sx={{ position: 'relative' }}>
+      <Box
+        sx={{
+          position: 'relative',
+          backgroundColor: '#000',
+          minHeight: '290px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
         <AvatarShape
           sx={{
             left: 0,
@@ -109,38 +121,31 @@ export function CardProfile({
           }}
         />
 
-        <Image
-          src="/assets/images/eth-bangkok.png"
-          alt="eth"
-          ratio="16/9"
-          // slotProps={{
-          //   overlay: {
-          //     // bgcolor: (theme) => varAlpha(theme.vars.palette.common.blackChannel, 0.48),
-          //   },
-          // }}
-        />
+        <Image src="/assets/images/eth-bangkok.png" alt="eth" ratio="16/9" />
       </Box>
 
       <ListItemText
         sx={{ mt: 7, mb: 1 }}
-        primary={user?.name || 'Jayvion Simon'}
-        secondary={user?.role || 'Blockchain Engineer'}
+        primary={user?.name || 'Anonymous'}
+        secondary={user?.role}
         primaryTypographyProps={{ typography: 'subtitle1' }}
         secondaryTypographyProps={{ component: 'span', mt: 0.5 }}
       />
 
-      <Stack direction="row" alignItems="center" justifyContent="center" sx={{ mb: 2.5 }}>
-        {_techStack.map((item) => (
-          <IconButton key={item.label} color="inherit">
-            {item.value === 'nestjs' && <NestJsIcon />}
-            {item.value === 'typescript' && <TypeScriptIcon />}
-            {item.value === 'solidity' && <SolidityIcon />}
-            {item.value === 'github' && <GitHubIcon />}
-            {item.value === 'zod' && <ZodIcon />}
-            {item.value === 'go' && <GoIcon />}
-          </IconButton>
-        ))}
-      </Stack>
+      {user && (
+        <Stack direction="row" alignItems="center" justifyContent="center" sx={{ mb: 2.5 }}>
+          {_techStack.map((item) => (
+            <IconButton key={item.label} color="inherit">
+              {item.value === 'nestjs' && <NestJsIcon />}
+              {item.value === 'typescript' && <TypeScriptIcon />}
+              {item.value === 'solidity' && <SolidityIcon />}
+              {item.value === 'github' && <GitHubIcon />}
+              {item.value === 'zod' && <ZodIcon />}
+              {item.value === 'go' && <GoIcon />}
+            </IconButton>
+          ))}
+        </Stack>
+      )}
 
       <Divider sx={{ borderStyle: 'dashed' }} />
       <Box
@@ -159,7 +164,7 @@ export function CardProfile({
           technologies, UX/UI design, and cybersecurity.`}
         </Typography>
 
-        <QRCode value={linkQrcode || 'https://google.com'} size={60} />
+        <QRCode value={`https://pingto.me/c/${qrCodeValue}`} size={60} />
       </Box>
     </Card>
   );

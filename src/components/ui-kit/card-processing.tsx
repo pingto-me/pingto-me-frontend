@@ -7,13 +7,17 @@ export type ProcessingCardProps = {
   subtitle?: string;
   buttonText?: string;
   onButtonClick?: () => void;
+  isCard?: boolean;
+  isScreenLoading?: boolean;
 };
 
 const ProcessingCard: React.FC<ProcessingCardProps> = ({
-  title = 'Verification Processing',
-  subtitle = 'Please sign the transaction.',
-  buttonText = 'Cancel the verification process',
+  title = 'Processing',
+  subtitle = 'Please wait a moment.',
+  buttonText,
   onButtonClick,
+  isCard = true,
+  isScreenLoading = true,
 }) => (
   <Box
     sx={{
@@ -21,7 +25,7 @@ const ProcessingCard: React.FC<ProcessingCardProps> = ({
       py: 4,
       px: 3,
       borderRadius: 2,
-      boxShadow: '0px 2px 10px rgba(0, 0, 0, 0.1)',
+      boxShadow: isCard ? '0 2px 10px rgba(0,0,0,0.1)' : 0,
       minWidth: 400,
       margin: 'auto',
       backgroundColor: '#fff',
@@ -39,13 +43,17 @@ const ProcessingCard: React.FC<ProcessingCardProps> = ({
         margin: '0 auto 16px',
       }}
     >
-      <CircularProgress size={60} thickness={5} sx={{ color: '#3DC152' }} />
+      <CircularProgress size={60} thickness={5} sx={{ color: '#2FEAA8' }} />
     </Box>
 
     {/* Title */}
-    <Typography variant="h6" sx={{ mt: 2, fontWeight: 'bold' }}>
-      {title}
-    </Typography>
+    {isScreenLoading ? (
+      <Box component="img" src="/assets/logos/PINGTOME.svg" sx={{ cursor: 'pointer' }} />
+    ) : (
+      <Typography variant="h6" sx={{ mt: 2, fontWeight: 'bold' }}>
+        {title}
+      </Typography>
+    )}
 
     {/* Subtitle */}
     <Typography variant="body2" color="text.secondary" sx={{ mt: 1, mb: 3 }}>
@@ -53,14 +61,16 @@ const ProcessingCard: React.FC<ProcessingCardProps> = ({
     </Typography>
 
     {/* Button */}
-    <Button
-      variant="outlined"
-      size="large"
-      onClick={onButtonClick}
-      sx={{ textTransform: 'none', fontWeight: 600 }}
-    >
-      {buttonText}
-    </Button>
+    {buttonText && (
+      <Button
+        variant="outlined"
+        size="large"
+        onClick={onButtonClick}
+        sx={{ textTransform: 'none', fontWeight: 600 }}
+      >
+        {buttonText}
+      </Button>
+    )}
   </Box>
 );
 
