@@ -31,7 +31,7 @@ const mockDataNFTs = {
   },
 };
 
-export default function NFTsDetailsView({ NFTsId }: Props) {
+export default function CardsDetailsView({ NFTsId }: Props) {
   const router = useRouter();
 
   const NFTs = mockDataNFTs;
