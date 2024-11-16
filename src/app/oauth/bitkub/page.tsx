@@ -35,7 +35,7 @@ export default function Page() {
 
         // const { accessToken } = data;
         // setSession(accessToken, LoginMethodEnum.BITKUBNEXT);
-        alert('Login success');
+
         window.close();
       }
     } catch (error) {

@@ -1,31 +1,85 @@
+import { useState } from 'react';
+
 import Box from '@mui/material/Box';
-import { Stack } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import { useTheme } from '@mui/material/styles';
 import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
+import { List, Menu, Stack, Button, Avatar, MenuItem, ListItemButton } from '@mui/material';
 
-import { useRouter, usePathname } from 'src/routes/hooks';
+import { paths } from 'src/routes/paths';
+import { useRouter } from 'src/routes/hooks';
 
 import { useOffSetTop } from 'src/hooks/use-off-set-top';
 
 import { bgBlur } from 'src/theme/css';
-import { useAppSelector } from 'src/store';
+import { useAuthContext } from 'src/auth/hooks';
 
 import Logo from 'src/components/logo';
+import Iconify from 'src/components/iconify';
 
 import { HEADER } from '../config-layout';
+
+// ----------------------------------------------------------------------
+const options = [
+  {
+    value: 'sign-out',
+    label: 'Sign out',
+    icon: <Iconify icon="material-symbols:logout" />,
+  },
+];
 
 // ----------------------------------------------------------------------
 
 export default function Header() {
   const theme = useTheme();
   const router = useRouter();
-  const pathname = usePathname();
-  const { pageTitle } = useAppSelector((state) => state.page);
 
   const offsetTop = useOffSetTop(HEADER.H_DESKTOP);
+
+  const { user } = useAuthContext();
+  const { disconnect } = useAuthContext();
+
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [selectedIndex, setSelectedIndex] = useState(1);
+  const open = Boolean(anchorEl);
+
+  const navItems = [
+    { label: 'Dashboard', path: paths.dashboard },
+    { label: 'Profile', path: `/p/${1234}` },
+    { label: 'NFTs', path: '/nft-gallory' },
+    { label: 'Cards', path: '/cards' },
+    { label: 'World', path: '/world' },
+  ];
+
+  const handleClickListItem = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuItemClick = (
+    event: React.MouseEvent<HTMLElement>,
+    value: string,
+    index: number
+  ) => {
+    if (value === 'sign-out') {
+      handleLogout();
+    }
+
+    setSelectedIndex(index);
+    setAnchorEl(null);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    disconnect();
+  };
+
+  const handleRedirect = (path: string) => {
+    router.push(path);
+  };
 
   return (
     <AppBar>
@@ -55,28 +109,87 @@ export default function Header() {
 
           <Box sx={{ flexGrow: 1 }} />
 
-          <Stack
-            component="nav"
-            direction="row"
-            alignItems="center"
-            spacing={5}
-            sx={{ mr: 2.5, height: 1 }}
-          >
-            <Typography variant="body2" sx={{ color: 'text.primary' }}>
-              Dashboard
-            </Typography>
+          <Stack component="nav" direction="row" alignItems="center" spacing={2} sx={{ height: 1 }}>
+            {navItems.map((item, index) => (
+              <Button
+                key={index}
+                variant="text"
+                sx={{ color: 'text.primary' }}
+                onClick={() => handleRedirect(item.path)}
+              >
+                {item.label}
+              </Button>
+            ))}
 
-            <Typography variant="body2" sx={{ color: 'text.primary' }}>
-              Profile
-            </Typography>
+            <Box>
+              <List component="nav" sx={{ px: 0 }}>
+                <ListItemButton
+                  id="lock-button"
+                  aria-haspopup="listbox"
+                  aria-controls="lock-menu"
+                  aria-label="when device is locked"
+                  aria-expanded={open ? 'true' : undefined}
+                  onClick={handleClickListItem}
+                  sx={{ borderRadius: 1 }}
+                >
+                  <Avatar alt={user?.id || ''} sx={{ width: 32, height: 32 }}>
+                    {/* TODO change it later */}
+                    {user?.id?.charAt(0).toUpperCase()}
+                  </Avatar>
 
-            <Typography variant="body2" sx={{ color: 'text.primary' }}>
-              NFTs
-            </Typography>
+                  {/* <ListItemText
+                    primary={user?.displayName || ''}
+                    secondary={user?.email || ''}
+                    primaryTypographyProps={{
+                      typography: 'xsSemiBold',
+                      color: 'text.secondary',
+                    }}
+                    secondaryTypographyProps={{
+                      component: 'span',
+                      typography: 'baseRegular',
+                      color: 'text.tertiary',
+                    }}
+                  /> */}
 
-            <Typography variant="body2" sx={{ color: 'text.primary' }}>
-              Cards
-            </Typography>
+                  {/* <Iconify icon="mingcute:down-line" sx={{ ml: 2 }} /> */}
+                </ListItemButton>
+              </List>
+
+              <Menu
+                id="user-menu"
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                MenuListProps={{
+                  'aria-labelledby': 'user-button',
+                  role: 'listbox',
+                }}
+              >
+                {options.map((option, index) => (
+                  <MenuItem
+                    key={index}
+                    selected={index === selectedIndex}
+                    onClick={(event) => handleMenuItemClick(event, option.value, index)}
+                  >
+                    <Stack
+                      direction="row"
+                      minWidth={180}
+                      spacing={1}
+                      alignItems="center"
+                      sx={{
+                        fontSize: 14,
+                        fontWeight: 500,
+                        ...(option.value === 'sign-out' && {
+                          color: theme.palette.error.light,
+                        }),
+                      }}
+                    >
+                      {option.icon} {option.label}
+                    </Stack>
+                  </MenuItem>
+                ))}
+              </Menu>
+            </Box>
           </Stack>
         </Container>
       </Toolbar>

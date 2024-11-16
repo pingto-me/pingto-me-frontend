@@ -11,7 +11,6 @@ import ToastProvider from 'src/components/toast';
 import { StoreProvider } from 'src/store';
 import { PropsWithChildren } from 'react';
 import { AuthProvider } from 'src/auth/context';
-import DynamicProvider from 'src/context/dynamic-provider';
 
 // ----------------------------------------------------------------------
 
@@ -39,20 +38,20 @@ export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en" className={primaryFont.className}>
       <body>
-        <DynamicProvider>
-          <ThemeProvider>
-            <ToastProvider>
-              <StoreProvider>
-                <AuthProvider>
-                  <MotionLazy>
-                    <ProgressBar />
-                    {children}
-                  </MotionLazy>
-                </AuthProvider>
-              </StoreProvider>
-            </ToastProvider>
-          </ThemeProvider>
-        </DynamicProvider>
+        {/* <DynamicProvider> */}
+        <ThemeProvider>
+          <ToastProvider>
+            <StoreProvider>
+              <AuthProvider>
+                <MotionLazy>
+                  <ProgressBar />
+                  {children}
+                </MotionLazy>
+              </AuthProvider>
+            </StoreProvider>
+          </ToastProvider>
+        </ThemeProvider>
+        {/* </DynamicProvider> */}
       </body>
     </html>
   );

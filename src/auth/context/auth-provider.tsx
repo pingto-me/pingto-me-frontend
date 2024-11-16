@@ -1,6 +1,5 @@
 'use client';
 
-import { useDynamicContext } from '@dynamic-labs/sdk-react-core';
 // import { useDisconnect } from 'wagmi';
 import { useMemo, useState, useCallback, PropsWithChildren } from 'react';
 
@@ -24,8 +23,8 @@ import { setSession, isValidToken } from './utils';
 
 export default function AuthProvider({ children }: PropsWithChildren) {
   // const { disconnect: disconnectWallet } = useDisconnect();
-  const { handleLogOut } = useDynamicContext();
-
+  // const { handleLogOut } = useDynamicContext();
+  // const isLoggedIn = useIsLoggedIn();
   // state
   const loading = useBoolean(true);
   const logingOut = useBoolean(false);
@@ -72,16 +71,14 @@ export default function AuthProvider({ children }: PropsWithChildren) {
 
     console.log('loginMethod', loginMethod);
 
-    if (
-      loginMethod === LoginMethodEnum.BITKUBNEXT &&
-      (await bitkubNextSdk.loginStatus()) === 'CONNECTED'
-    ) {
+    if ((await bitkubNextSdk.loginStatus()) === 'CONNECTED') {
       await bitkubNextSdk.logout();
     }
 
-    if (loginMethod === LoginMethodEnum.DYNAMIC) {
-      await handleLogOut();
-    }
+    // console.log({ isLoggedIn });
+    // if (isLoggedIn) {
+    //   await handleLogOut();
+    // }
 
     setSession(null, null);
     setUserState(null);
@@ -89,7 +86,7 @@ export default function AuthProvider({ children }: PropsWithChildren) {
     window.location.reload();
     await sleep(500);
     logingOut.onFalse();
-  }, [logingOut, handleLogOut]);
+  }, [logingOut]);
 
   const checkAuthenticated = userState ? 'authenticated' : 'unauthenticated';
 

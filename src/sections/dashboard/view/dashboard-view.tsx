@@ -1,25 +1,15 @@
 'use client';
 
-import { Grid, Stack, Button, Container, Typography } from '@mui/material';
+import { Grid, Stack, Button, Divider, Container, Typography } from '@mui/material';
 
 import { RouterLink } from 'src/routes/components';
 
-import { bitkubNextSdk } from 'src/utils/bitkub-next';
-import { localStorageGetItem } from 'src/utils/storage-available';
-
-import { useAuthContext } from 'src/auth/hooks';
-import { LOGIN_METHOD_STORAGE_KEY } from 'src/config-global';
-
 export default function DashboardView() {
-  const { disconnect } = useAuthContext();
-
-  const logUser = async () => {
-    const userInfo = await bitkubNextSdk.getUserInfo();
-    const balance = await bitkubNextSdk.getBalanceNative();
-    console.log({ userInfo, balance });
-  };
-
-  const loginMethod = localStorageGetItem(LOGIN_METHOD_STORAGE_KEY);
+  // const logUser = async () => {
+  //   const userInfo = await bitkubNextSdk.getUserInfo();
+  //   const balance = await bitkubNextSdk.getBalanceNative();
+  //   console.log({ userInfo, balance });
+  // };
 
   const infos = [
     {
@@ -32,26 +22,35 @@ export default function DashboardView() {
       title: 'Print Your Profile to Card',
       description: `Embed your profile into an NFC card, making it easy to share your digital identity with just a tap.`,
       button: 'Print Your Profile',
-      path: '/',
+      path: '/print-profile',
     },
     {
       title: 'Print Your NFT to Card',
       description: `Carry your favorite NFTs wherever you go and share them with others in a tangible way.`,
       button: 'Print your NFT',
-      path: '/',
+      path: '/print-nft',
     },
   ];
 
   const renderCard = (info: any) => (
-    <Stack>
-      <Typography variant="h5">{info.title}</Typography>
-      <Typography variant="body2">{info.description}</Typography>
+    <Stack spacing={2}>
+      <Typography variant="h6" fontWeight="bold">
+        {info.title}
+      </Typography>
+      <Typography variant="body2" color="text.secondary">
+        {info.description}
+      </Typography>
       <Button
         component={RouterLink}
         href={info.path}
         variant="contained"
         color="inherit"
         size="large"
+        sx={{
+          borderRadius: 1,
+          fontWeight: 'bold',
+          maxWidth: 180,
+        }}
       >
         {info.button}
       </Button>
@@ -59,39 +58,34 @@ export default function DashboardView() {
   );
 
   return (
-    <Container>
-      <Stack spacing={3}>
-        <Stack>
-          <Typography variant="h5">Dashboard</Typography>
-          <Typography variant="body2">
-            {`Your digital identity starts here. With PingTo.me,
-            you can create, share, and even immortalize your profile on NFC cards—taking your online presence into the real world.
-            Why PingTo.me? At PingTo.me, we believe in making your connections truly yours. Whether it’s your social links, portfolio,
-            or business contact info, we help you bring it all together in a single, dynamic profile. But that’s not all—we go beyond
-            the digital world to offer something tangible and secure. Bring Your Profile to Life With PingTo.me, your digital profile
-            isn’t just an online link. It’s also a physical NFC card that you can carry with you and share effortlessly. Here's how it works:`}
+    <Container maxWidth="lg">
+      <Stack
+        spacing={4}
+        sx={{
+          mt: 3,
+        }}
+      >
+        {/* Header Section */}
+        <Stack spacing={2}>
+          <Typography variant="h4" fontWeight="bold">
+            Dashboard
+          </Typography>
+          <Typography variant="inherit" color="text.secondary" paragraph>
+            {`Your digital identity starts here. With PingTo.me, you can create, share, and even immortalize your profile on NFC cards—taking your online presence into the real world. Why PingTo.me? At PingTo.me, we believe in making your connections truly yours. Whether it’s your social links, portfolio, or business contact info, we help you bring it all together in a single, dynamic profile. But that’s not all—we go beyond the digital world to offer something tangible and secure. Bring Your Profile to Life With PingTo.me, your digital profile isn’t just an online link. It’s also a physical NFC card that you can carry with you and share effortlessly. Here's how it works:`}
           </Typography>
         </Stack>
 
-        <Grid container spacing={3}>
+        {/* Divider */}
+        <Divider />
+
+        {/* Cards Section */}
+        <Grid container spacing={4}>
           {infos.map((info, index) => (
-            <Grid item xs={4} key={index}>
+            <Grid item xs={12} md={4} key={index}>
               {renderCard(info)}
             </Grid>
           ))}
         </Grid>
-      </Stack>
-
-      <br />
-      <br />
-      <Stack spacing={3} pb={3}>
-        connect with {loginMethod}
-        <button type="button" onClick={() => logUser()}>
-          logUser
-        </button>
-        <button type="button" onClick={() => disconnect()}>
-          disconnect
-        </button>
       </Stack>
     </Container>
   );

@@ -8,6 +8,8 @@ import { useDeepEffect } from 'src/hooks/use-deep-effect';
 
 import axios from 'src/utils/axios';
 
+import { setSession } from 'src/auth/context/utils';
+
 import { LoginMethodEnum } from 'src/types/login-method.enum';
 
 type Props = {
@@ -59,6 +61,9 @@ export default function AppDynamicConnectButton({
         });
 
         console.log('signin', signin);
+
+        setSession(signin.tokens.accessToken, LoginMethodEnum.DYNAMIC);
+        window.location.reload();
 
         // const { data } = await axios.post('/api/auth/login', {
         //   email: 'demo@minimals.cc',
