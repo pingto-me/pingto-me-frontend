@@ -4,7 +4,8 @@ import { ethers } from 'ethers';
 import { useState, useEffect } from 'react';
 
 import LoadingButton from '@mui/lab/LoadingButton';
-import { Box, Stack, Divider, Container, Typography } from '@mui/material';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { Box, Stack, Divider, Container, IconButton, Typography } from '@mui/material';
 
 import { bitkubNextSdk } from '../../../utils/bitkub-next';
 
@@ -13,6 +14,7 @@ export default function PaymentWithBitkubView() {
   const [orderCreated, setOrderCreated] = useState(false);
   const [orderResponse, setOrderResponse] = useState(null);
   const [proceedLoading, setProceedLoading] = useState(false);
+  const [paymentComplete, setPaymentComplete] = useState(false);
   const accessToken =
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3YTcwMmE2MC0yNWNmLTRlYTYtODI5Yi05YzQyZDZiMmI5NTAiLCJpYXQiOjE3MzE3NjkwNzUsImV4cCI6MTczMjM3Mzg3NX0._nZzaBZhPwJ__seypPvytc7T-7JIBsipuZ3g9ZCN4b8';
 
@@ -69,7 +71,11 @@ export default function PaymentWithBitkubView() {
     } finally {
       setTimeout(() => {
         setProceedLoading(false);
-      }, 8000);
+        setOrderCreated(false);
+        setPaymentComplete(true);
+
+        // TODO: another logic or redirect
+      }, 10000);
     }
   };
 
@@ -102,7 +108,7 @@ export default function PaymentWithBitkubView() {
             mt: 2,
           }}
         >
-          {!orderCreated && (
+          {!orderCreated && !paymentComplete && (
             <LoadingButton
               variant="contained"
               color="inherit"
@@ -119,7 +125,7 @@ export default function PaymentWithBitkubView() {
             </LoadingButton>
           )}
 
-          {orderCreated && (
+          {orderCreated && !paymentComplete && (
             <LoadingButton
               variant="contained"
               color="primary"
@@ -134,6 +140,17 @@ export default function PaymentWithBitkubView() {
             >
               Proceed to Pay
             </LoadingButton>
+          )}
+
+          {paymentComplete && (
+            <IconButton
+              color="success"
+              sx={{
+                fontSize: 40,
+              }}
+            >
+              <CheckCircleIcon fontSize="inherit" />
+            </IconButton>
           )}
         </Box>
       </Stack>
