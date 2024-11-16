@@ -30,7 +30,7 @@ export default function LoginView() {
           sx={{ fontFamily: (theme) => theme.typography.fontTertiaryFamily }}
         />
         <Box component="img" src="/assets/logos/PINGTOME.svg" />
-        <Typography variant="body2" color="common.black">
+        <Typography variant="body2" color="common.black" sx={{ marginTop: 1, marginBottom: 2 }}>
           please connect your wallet to continue
         </Typography>
       </CenterStack>
