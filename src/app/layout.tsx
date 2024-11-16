@@ -2,7 +2,6 @@
 import 'src/global.css';
 
 // ----------------------------------------------------------------------
-import { headers } from 'next/headers';
 import ThemeProvider from 'src/theme';
 import { primaryFont } from 'src/theme/typography';
 
@@ -24,10 +23,9 @@ export const viewport = {
 };
 
 export const metadata = {
-  title: 'Callverz | Protect Your Privacy',
-  description: 'Protect Your Privacy, Identify Calls with Confidence',
-  keywords:
-    'callverz,zero-knowledge,,zk,privacy,blockchain,call-identification,spam-protection,call-protection,call-verification,callverz-ai,ai',
+  title: 'pingto.me',
+  description: 'pingto.me',
+  keywords: 'pingto.me',
   manifest: '/manifest.json',
   icons: [
     { rel: 'icon', url: '/favicon/favicon.ico' },
@@ -38,13 +36,10 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }: PropsWithChildren) {
-  const cookies = headers().get('cookie');
   return (
     <html lang="en" className={primaryFont.className}>
       <body>
-        {/* <ReownProvider cookies={cookies}> */}
         <DynamicProvider>
-          {/* <Web3AuthProvider> */}
           <ThemeProvider>
             <ToastProvider>
               <StoreProvider>
@@ -57,9 +52,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
               </StoreProvider>
             </ToastProvider>
           </ThemeProvider>
-          {/* </Web3AuthProvider> */}
         </DynamicProvider>
-        {/* </ReownProvider> */}
       </body>
     </html>
   );

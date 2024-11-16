@@ -40,7 +40,7 @@ export default function Page() {
     } catch (error) {
       console.log(error);
       setSession(null, null);
-      bitkubNextSdk.logout();
+      // bitkubNextSdk.logout();
       alert('Login failed');
     }
   };

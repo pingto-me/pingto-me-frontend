@@ -50,10 +50,10 @@ export default function AuthProvider({ children }: PropsWithChildren) {
 
         setUserState(user);
         loading.onFalse();
-        if (interval.current) {
-          clearInterval(interval.current);
-          interval.current = null;
-        }
+        // if (interval.current) {
+        //   clearInterval(interval.current);
+        //   interval.current = null;
+        // }
       } else {
         setUserState(null);
         loading.onFalse();
@@ -62,24 +62,26 @@ export default function AuthProvider({ children }: PropsWithChildren) {
       console.error(error);
       setUserState(null);
 
-      if (interval.current) {
-        clearInterval(interval.current);
-        interval.current = null;
-      }
+      // if (interval.current) {
+      //   clearInterval(interval.current);
+      //   interval.current = null;
+      // }
     }
   }, [loading]);
 
   useDeepEffect(() => {
-    interval.current = setInterval(() => {
-      initialize();
-    }, 2000);
+    initialize();
 
-    return () => {
-      if (interval.current) {
-        clearInterval(interval.current);
-        interval.current = null;
-      }
-    };
+    // interval.current = setInterval(() => {
+    //   initialize();
+    // }, 2000);
+
+    // return () => {
+    //   if (interval.current) {
+    //     clearInterval(interval.current);
+    //     interval.current = null;
+    //   }
+    // };
   }, []);
 
   const connect = useCallback(async () => {}, []);

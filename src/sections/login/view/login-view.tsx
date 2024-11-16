@@ -4,12 +4,9 @@ import { Typography } from '@mui/material';
 
 import { useBoolean } from 'src/hooks/use-boolean';
 
-import { bitkubNextSdk } from 'src/utils/bitkub-next';
-
 import { CenterStack } from 'src/components/box';
 
 import DynamicConnectButton from '../dynamic-connect-wallet';
-import Web3AuthConnectButton from '../web3auth-connect-button';
 import BitkubNextConnectButton from '../bitkub-next-connect-button';
 
 export default function LoginView() {
@@ -40,14 +37,8 @@ export default function LoginView() {
         </Typography>
       </CenterStack>
       <CenterStack spacing={1} width={1} maxWidth={380}>
-        {/* <ReownConnectButton {...connectingProps} /> */}
         <BitkubNextConnectButton {...connectingProps} />
         <DynamicConnectButton {...connectingProps} />
-        <Web3AuthConnectButton {...connectingProps} />
-
-        <button type="button" onClick={() => bitkubNextSdk.logout()}>
-          bitkub disconnect
-        </button>
       </CenterStack>
     </CenterStack>
   );

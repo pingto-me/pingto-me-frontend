@@ -1,13 +1,12 @@
-import { useEffect } from 'react';
 import {
   useIsLoggedIn,
   useDynamicContext,
   DynamicConnectButton,
 } from '@dynamic-labs/sdk-react-core';
 
-import axios from 'src/utils/axios';
+import { useDeepEffect } from 'src/hooks/use-deep-effect';
 
-import { setSession } from 'src/auth/context/utils';
+import axios from 'src/utils/axios';
 
 import { LoginMethodEnum } from 'src/types/login-method.enum';
 
@@ -28,10 +27,12 @@ export default function AppDynamicConnectButton({
   console.log('Dynamic isLoggedIn', isLoggedIn);
   console.log('Dynamic primaryWallet', primaryWallet);
 
-  useEffect(() => {
+  useDeepEffect(() => {
     (async () => {
       if (isLoggedIn) {
         if (!primaryWallet) return;
+
+        console.log('do');
 
         // const { data } = await axios.post(`/auth/signin/public-address`, {
         //   publicAddress: primaryWallet.address,
@@ -41,22 +42,32 @@ export default function AppDynamicConnectButton({
 
         // TODO - process the code with backend + set session
 
-        // const { data: t } = await axios.post('/auth/wallet/validate', {
-        //   publicAddress: primaryWallet.address,
-        //   walletType: LoginMethodEnum.DYNAMIC,
-        // });
-
-        // console.log('------------');
-        // console.log({ t });
-
-        const { data } = await axios.post('/api/auth/login', {
-          email: 'demo@minimals.cc',
-          password: 'demo1234',
+        const { data: validate } = await axios.post('/auth/wallet/validate', {
+          publicAddress: primaryWallet.address,
+          walletType: LoginMethodEnum.DYNAMIC,
         });
-        console.log({ data });
 
-        const { accessToken } = data;
-        setSession(accessToken, LoginMethodEnum.DYNAMIC);
+        console.log('------------');
+        console.log({ validate });
+
+        const signature = await primaryWallet.signMessage(validate.msg);
+
+        const { data: signin } = await axios.post('/auth/wallet/signin', {
+          publicAddress: primaryWallet.address,
+          signature,
+          walletType: LoginMethodEnum.DYNAMIC,
+        });
+
+        console.log('signin', signin);
+
+        // const { data } = await axios.post('/api/auth/login', {
+        //   email: 'demo@minimals.cc',
+        //   password: 'demo1234',
+        // });
+        // console.log({ data });
+
+        // const { accessToken } = data;
+        // setSession(accessToken, LoginMethodEnum.DYNAMIC);
       }
     })();
 

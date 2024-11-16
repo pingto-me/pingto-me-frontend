@@ -1,4 +1,4 @@
-import { Button } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
 
 import { toastError } from 'src/utils/format-error';
 import { bitkubNextSdk } from 'src/utils/bitkub-next';
@@ -16,8 +16,13 @@ export default function BitkubNextConnectButton({
 }: Props) {
   const handleConnect = async () => {
     if (connecting) return;
+
     try {
       startConnecting();
+      const userInfo = await bitkubNextSdk.getUserInfo();
+      if (userInfo) {
+        await bitkubNextSdk.logout();
+      }
       await bitkubNextSdk.loginWithBitkubNext();
     } catch (error) {
       toastError(error);
@@ -27,8 +32,9 @@ export default function BitkubNextConnectButton({
   };
 
   return (
-    <Button
+    <LoadingButton
       variant="contained"
+      loading={connecting}
       color="inherit"
       fullWidth
       size="large"
@@ -36,6 +42,6 @@ export default function BitkubNextConnectButton({
       onClick={handleConnect}
     >
       Connect via Bitkub Next Wallet
-    </Button>
+    </LoadingButton>
   );
 }
