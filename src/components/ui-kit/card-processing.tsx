@@ -8,6 +8,7 @@ export type ProcessingCardProps = {
   buttonText?: string;
   onButtonClick?: () => void;
   isCard?: boolean;
+  isScreenLoading?: boolean;
 };
 
 const ProcessingCard: React.FC<ProcessingCardProps> = ({
@@ -16,6 +17,7 @@ const ProcessingCard: React.FC<ProcessingCardProps> = ({
   buttonText,
   onButtonClick,
   isCard = true,
+  isScreenLoading = true,
 }) => (
   <Box
     sx={{
@@ -41,13 +43,17 @@ const ProcessingCard: React.FC<ProcessingCardProps> = ({
         margin: '0 auto 16px',
       }}
     >
-      <CircularProgress size={60} thickness={5} sx={{ color: '#3DC152' }} />
+      <CircularProgress size={60} thickness={5} sx={{ color: '#2FEAA8' }} />
     </Box>
 
     {/* Title */}
-    <Typography variant="h6" sx={{ mt: 2, fontWeight: 'bold' }}>
-      {title}
-    </Typography>
+    {isScreenLoading ? (
+      <Box component="img" src="/assets/logos/PINGTOME.svg" sx={{ cursor: 'pointer' }} />
+    ) : (
+      <Typography variant="h6" sx={{ mt: 2, fontWeight: 'bold' }}>
+        {title}
+      </Typography>
+    )}
 
     {/* Subtitle */}
     <Typography variant="body2" color="text.secondary" sx={{ mt: 1, mb: 3 }}>

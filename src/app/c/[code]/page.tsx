@@ -135,7 +135,13 @@ export default function Page({ params }: Props) {
           alignItems: 'center',
         }}
       >
-        <ProcessingCard isCard={false} title="Loading..." />;
+        <ProcessingCard
+          isCard={false}
+          isScreenLoading
+          subtitle="Redirecting you to a card you have scanned, please wait."
+          title="Loading..."
+        />
+        ;
       </Box>
     );
   }
