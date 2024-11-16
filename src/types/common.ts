@@ -8,3 +8,10 @@ export type Pagination = {
 export type BasePagination<T> = Pagination & {
   results: T[];
 };
+
+export type CommonPayloadMetaData = {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt?: string | null;
+};
