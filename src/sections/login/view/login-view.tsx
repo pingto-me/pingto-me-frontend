@@ -1,5 +1,6 @@
 'use client';
 
+import Box from '@mui/material/Box';
 import { Typography } from '@mui/material';
 
 import { useBoolean } from 'src/hooks/use-boolean';
@@ -19,11 +20,7 @@ export default function LoginView() {
   };
 
   return (
-    <CenterStack
-      sx={{ bgcolor: 'primary.main', width: '100vw', height: '100vh' }}
-      spacing={2}
-      p={2}
-    >
+    <CenterStack sx={{ bgcolor: 'white', width: '100vw', height: '100vh' }} spacing={2} p={2}>
       <CenterStack>
         <Typography
           variant="h1"
@@ -32,6 +29,7 @@ export default function LoginView() {
           fontWeight={800}
           sx={{ fontFamily: (theme) => theme.typography.fontTertiaryFamily }}
         />
+        <Box component="img" src="/assets/logos/PINGTOME.svg" />
         <Typography variant="body2" color="common.black">
           please connect your wallet to continue
         </Typography>

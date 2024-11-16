@@ -79,5 +79,9 @@ export default function AppDynamicConnectButton({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoggedIn]);
 
-  return <DynamicConnectButton>Connect via Dynamic</DynamicConnectButton>;
+  return (
+    <DynamicConnectButton buttonClassName="customConnectButton">
+      Connect via Dynamic
+    </DynamicConnectButton>
+  );
 }
