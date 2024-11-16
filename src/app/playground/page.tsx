@@ -1,5 +1,5 @@
-import DashboardView from 'src/sections/dashboard/view/dashboard-view';
+import PaymentWithBitkubView from '../../sections/payment/view/payment-with-bitkub-view';
 
 export default function Page() {
-  return <DashboardView />;
+  return <PaymentWithBitkubView />;
 }
