@@ -1,8 +1,10 @@
 'use client';
 
-import { Stack, Container } from '@mui/material';
+import { Stack, Divider, Container } from '@mui/material';
 
 import { CardProfile } from 'src/components/ui-kit/card-profile';
+
+import ProfileEditView from 'src/sections/profile/view/profile-edit-view';
 
 type Props = {
   params: {
@@ -17,6 +19,10 @@ export default function Page({ params }: Props) {
       <Stack pt={3} justifyContent="center" alignItems="center">
         <CardProfile />
       </Stack>
+
+      <br />
+      <Divider />
+      <ProfileEditView id={code1} />
     </Container>
   );
 }
