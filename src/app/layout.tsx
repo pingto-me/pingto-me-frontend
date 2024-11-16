@@ -12,6 +12,7 @@ import { StoreProvider } from 'src/store';
 import { PropsWithChildren } from 'react';
 import { AuthProvider } from 'src/auth/context';
 import DynamicProvider from 'src/context/dynamic-provider';
+import { ProcessingModalProvider } from 'src/components/modals/processing-modal';
 
 // ----------------------------------------------------------------------
 
@@ -42,14 +43,16 @@ export default function RootLayout({ children }: PropsWithChildren) {
         <DynamicProvider>
           <ThemeProvider>
             <ToastProvider>
-              <StoreProvider>
-                <AuthProvider>
-                  <MotionLazy>
-                    <ProgressBar />
-                    {children}
-                  </MotionLazy>
-                </AuthProvider>
-              </StoreProvider>
+              <ProcessingModalProvider>
+                <StoreProvider>
+                  <AuthProvider>
+                    <MotionLazy>
+                      <ProgressBar />
+                      {children}
+                    </MotionLazy>
+                  </AuthProvider>
+                </StoreProvider>
+              </ProcessingModalProvider>
             </ToastProvider>
           </ThemeProvider>
         </DynamicProvider>

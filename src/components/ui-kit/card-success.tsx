@@ -9,6 +9,7 @@ type SuccessMessageCardProps = {
   subtitle: string;
   buttonText?: string;
   onButtonClick?: () => void;
+  isCard?: boolean;
 };
 
 const SuccessCard: React.FC<SuccessMessageCardProps> = ({
@@ -16,6 +17,7 @@ const SuccessCard: React.FC<SuccessMessageCardProps> = ({
   subtitle = 'The claiming is successfully.',
   buttonText = 'View your card collection',
   onButtonClick,
+  isCard = false,
 }) => (
   <Box
     sx={{
@@ -23,7 +25,7 @@ const SuccessCard: React.FC<SuccessMessageCardProps> = ({
       py: 4,
       px: 2,
       borderRadius: 2,
-      boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+      boxShadow: isCard ? '0 2px 10px rgba(0,0,0,0.1)' : 0,
       minWidth: 400,
       margin: 'auto',
     }}

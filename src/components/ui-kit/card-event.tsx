@@ -13,7 +13,7 @@ type Props = {
   subtitle?: string;
   eventDate?: string;
   description?: string;
-  qrCodeValue?: string;
+  qrCodeValue: string;
   certified?: boolean;
 };
 
@@ -22,13 +22,13 @@ export const EventCard: React.FC<Props> = ({
   subtitle = 'November 15 – 17, 2024',
   eventDate = 'Bangkok, Thailand',
   description = 'Claim this card by scanning this QR code after that it will show your profile when scanned.',
-  qrCodeValue = 'https://ping.to.me',
+  qrCodeValue,
   certified = true,
 }) => (
   <Card
     sx={{
       position: 'relative',
-      width: '400px',
+      width: '350px',
       borderRadius: 2,
       boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
       overflow: 'hidden',
@@ -55,7 +55,7 @@ export const EventCard: React.FC<Props> = ({
     >
       <Image src={ethBangkok.src} alt="eth" ratio="16/9" />
       <Box sx={{ position: 'absolute', bottom: 0, right: 16, zIndex: 10 }}>
-        <Box component="img" src="/assets/logos/PINGTOME-WHITE.svg" sx={{ color: '#fff' }} />
+        <Box component="img" src="/assets/logos/PINGTOME-WITHE.svg" sx={{ color: '#fff' }} />
         <Typography variant="body2" sx={{ textAlign: 'right', color: '#fff' }}>
           pingto.me
         </Typography>
@@ -84,7 +84,12 @@ export const EventCard: React.FC<Props> = ({
           alignItems: 'center',
         }}
       >
-        <QRCode value={qrCodeValue} size={50} fgColor="#000" bgColor="#D4AF37" />
+        <QRCode
+          value={`https://pingto.me/c/${qrCodeValue}`}
+          size={50}
+          fgColor="#000"
+          bgColor="#D4AF37"
+        />
       </Box>
       <Typography variant="body2" sx={{ textAlign: 'left', color: '#fff' }}>
         {description}

@@ -7,13 +7,15 @@ export type ProcessingCardProps = {
   subtitle?: string;
   buttonText?: string;
   onButtonClick?: () => void;
+  isCard?: boolean;
 };
 
 const ProcessingCard: React.FC<ProcessingCardProps> = ({
-  title = 'Verification Processing',
-  subtitle = 'Please sign the transaction.',
-  buttonText = 'Cancel the verification process',
+  title = 'Processing',
+  subtitle = 'Please wait a moment.',
+  buttonText,
   onButtonClick,
+  isCard = true,
 }) => (
   <Box
     sx={{
@@ -21,7 +23,7 @@ const ProcessingCard: React.FC<ProcessingCardProps> = ({
       py: 4,
       px: 3,
       borderRadius: 2,
-      boxShadow: '0px 2px 10px rgba(0, 0, 0, 0.1)',
+      boxShadow: isCard ? '0 2px 10px rgba(0,0,0,0.1)' : 0,
       minWidth: 400,
       margin: 'auto',
       backgroundColor: '#fff',
@@ -53,14 +55,16 @@ const ProcessingCard: React.FC<ProcessingCardProps> = ({
     </Typography>
 
     {/* Button */}
-    <Button
-      variant="outlined"
-      size="large"
-      onClick={onButtonClick}
-      sx={{ textTransform: 'none', fontWeight: 600 }}
-    >
-      {buttonText}
-    </Button>
+    {buttonText && (
+      <Button
+        variant="outlined"
+        size="large"
+        onClick={onButtonClick}
+        sx={{ textTransform: 'none', fontWeight: 600 }}
+      >
+        {buttonText}
+      </Button>
+    )}
   </Box>
 );
 
