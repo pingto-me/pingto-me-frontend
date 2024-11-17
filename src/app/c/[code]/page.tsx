@@ -15,6 +15,8 @@ import ProcessingCard from 'src/components/ui-kit/card-processing';
 import { useProcessingModal } from 'src/components/modals/processing-modal';
 
 import { Card } from 'src/types/card';
+import { useRouter } from 'src/routes/hooks';
+import { paths } from 'src/routes/paths';
 
 type Props = {
   params: {
@@ -23,6 +25,7 @@ type Props = {
 };
 
 export default function Page({ params }: Props) {
+  const router = useRouter();
   const { code } = params;
   const [data, setData] = useState<Card | null>(null);
   const { openModal, closeModal } = useProcessingModal();
@@ -45,6 +48,7 @@ export default function Page({ params }: Props) {
       if (res) setData(res);
     } catch (error) {
       console.log(error);
+      setData(null);
     } finally {
       setIsLoading(false);
     }
@@ -142,6 +146,35 @@ export default function Page({ params }: Props) {
           title="Loading..."
         />
         ;
+      </Box>
+    );
+  }
+
+  if (!data) {
+    return (
+      <Box
+        sx={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexDirection: 'column',
+        }}
+      >
+        <Typography variant="h4">Card not found</Typography>
+        <Button
+          variant="outlined"
+          color="inherit"
+          size="large"
+          sx={{ mt: 2 }}
+          onClick={() => router.push(paths.root)}
+        >
+          Back to Home
+        </Button>
       </Box>
     );
   }
