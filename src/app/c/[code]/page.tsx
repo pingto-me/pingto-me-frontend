@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { ethers } from 'ethers';
 import { SupportChat } from '@pushprotocol/uiweb';
 import { useState, useEffect, useCallback } from 'react';
 
@@ -34,6 +35,7 @@ export default function Page({ params }: Props) {
   const { openModal, closeModal } = useProcessingModal();
   const [isRedeemed, setIsRedeemed] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const signer = ethers.Wallet.createRandom();
 
   const handleProcess = () => {
     openModal({
@@ -324,24 +326,26 @@ export default function Page({ params }: Props) {
             </Button>
           </Stack>
 
-          {/* <ChatUIProvider>
-            <ChatView
-              chatId="89f7b382b9b1496dca2b9a94ef87c80dd102db05dcb40b165fabfab28770fd55"
-              limit={10}
-              verificationFailModalPosition={MODAL_POSITION_TYPE.RELATIVE}
-              isConnected
-            />
-          </ChatUIProvider> */}
-
-          <SupportChat
-            supportAddress="0xd9c1CCAcD4B8a745e191b62BA3fcaD87229CB26d" // support address, this belongs to you
-          />
           {/* Description */}
           <Typography variant="body2" sx={{ color: 'text.secondary', mt: 2 }}>
             Don’t worry, ping is just saying hi to the cards
           </Typography>
         </Box>
       )}
+
+      {/* <ChatUIProvider>
+        <ChatView
+          chatId="a1514e2ef8c3e26e9c9dc277a977ff073405b352e1a4c82e51ad56d4ceb0cc7c"
+          limit={10}
+          verificationFailModalPosition={MODAL_POSITION_TYPE.RELATIVE}
+          isConnected
+        />
+      </ChatUIProvider> */}
+
+      <SupportChat
+        supportAddress="0x13Ac5b9d3EF71Ebf02eD5EDF82Fa5EecfD06532a" // support address, this belongs to you
+        signer={signer}
+      />
     </Box>
   );
 }
