@@ -1,12 +1,12 @@
 'use client';
 
+import Link from 'next/link';
 import { useState, useEffect, useCallback } from 'react';
 
 import { Box, Grid, Chip, Stack, Button, Typography } from '@mui/material';
 
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
-import { RouterLink } from 'src/routes/components';
 
 import { redeemCard, getCardByCode } from 'src/rest-apis/card';
 
@@ -298,9 +298,9 @@ export default function Page({ params }: Props) {
             </Button>
 
             <Button
-              component={RouterLink}
-              target="_blank"
+              component={Link}
               href="https://testnet-scan.sign.global/attestation/onchain_evm_84532_0xda5"
+              target="_blank"
               variant="outlined"
               sx={{
                 borderColor: '#d3d3d3',
