@@ -62,7 +62,7 @@ type Props = CardProps & {
   user?: User;
   backgroundImage?: string;
   description?: string;
-  qrCodeValue: string;
+  qrCodeValue?: string;
   certified?: boolean;
 };
 

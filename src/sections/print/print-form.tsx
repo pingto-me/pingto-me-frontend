@@ -4,7 +4,7 @@ import * as Yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { enqueueSnackbar } from 'notistack';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useMemo, useEffect, useCallback } from 'react';
+import { useMemo, useState, useEffect, useCallback } from 'react';
 
 import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Unstable_Grid2';
@@ -17,6 +17,8 @@ import { fError } from 'src/utils/format-error';
 
 import FormProvider from 'src/components/hook-form';
 // import { CardProfile } from 'src/components/cards/card-profile';
+
+import axios from 'axios';
 
 import { localStorageGetItem } from 'src/utils/storage-available';
 
@@ -48,6 +50,26 @@ export default function PrintForm({
 }: Props) {
   const theme = useTheme();
   const router = useRouter();
+
+  const [price, setPrice] = useState<{} | null>(null);
+
+  useEffect(() => {
+    (async () => {
+      // fetch price from https://convertticketprice-j3hdpkv3tq-uc.a.run.app/convertTicketPrice?eventId=ethglobal with axios
+
+      const { data } = await axios.get(
+        'https://convertticketprice-j3hdpkv3tq-uc.a.run.app/convertTicketPrice?eventId=ethglobal'
+      );
+      console.log(data);
+      setPrice({
+        eventId: 'ethglobal',
+        usd: 5,
+        kub: '2.049180',
+        eth: '0.001573',
+        btc: '0.000055',
+      });
+    })();
+  }, []);
 
   const loginMethod = localStorageGetItem(LOGIN_METHOD_STORAGE_KEY) as LoginMethodEnum;
 
@@ -208,7 +230,7 @@ export default function PrintForm({
           <Typography variant="h6" sx={{ mb: 2, mt: 2 }}>
             Payment Information
           </Typography>
-          <PaymentInfoCard />
+          <PaymentInfoCard price={price} />
 
           <Box
             sx={{

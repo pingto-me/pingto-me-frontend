@@ -2,9 +2,13 @@ import React from 'react';
 
 import { Box, Card, Stack, Divider, Typography } from '@mui/material';
 
-import Iconify from 'src/components/iconify'; // Replace with your Iconify setup
+// Replace with your Iconify setup
 
-const PaymentInfoCard = () => (
+type Props = {
+  price: any;
+};
+
+const PaymentInfoCard = ({ price }: Props) => (
   <Card sx={{ p: 3, borderRadius: 2, boxShadow: 3 }}>
     {/* Details Section */}
     <Box>
@@ -22,7 +26,7 @@ const PaymentInfoCard = () => (
         </Box>
         <Box>
           <Typography variant="subtitle1" color="text.secondary">
-            24 USD{' '}
+            {price.usd} USD{' '}
           </Typography>
         </Box>
       </Box>
@@ -34,7 +38,7 @@ const PaymentInfoCard = () => (
       <Typography variant="body2" color="text.secondary">
         Subtotal
       </Typography>
-      <Typography variant="body2">24 USD</Typography>
+      <Typography variant="body2">{price.usd} USD</Typography>
     </Stack>
     <Stack direction="row" justifyContent="space-between" sx={{ mb: 2 }}>
       <Typography variant="body2" color="text.secondary">
@@ -47,14 +51,14 @@ const PaymentInfoCard = () => (
         Discount
       </Typography>
       <Typography variant="body2" sx={{ color: 'error.main' }}>
-        -8 USD
+        -0 USD
       </Typography>
     </Stack>
     <Stack direction="row" justifyContent="space-between" sx={{ mb: 2 }}>
       <Typography variant="body2" color="text.secondary">
         Taxes
       </Typography>
-      <Typography variant="body2">10 USD</Typography>
+      <Typography variant="body2">0 USD</Typography>
     </Stack>
     <Divider sx={{ borderStyle: 'dashed', mb: 2 }} />
     <Stack direction="row" justifyContent="space-between" sx={{ mb: 3 }}>
@@ -62,7 +66,7 @@ const PaymentInfoCard = () => (
         Total
       </Typography>
       <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
-        26 USD
+        {price.usd} USD
       </Typography>
     </Stack>
 
@@ -79,10 +83,10 @@ const PaymentInfoCard = () => (
       </Box>
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
         <Typography variant="body2" color="text.primary">
-          10.879 KUB
+          {price.kub} KUB
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          ~ 26 USD
+          ~ {price.usd} USD
         </Typography>
         <Typography variant="caption" color="text.secondary">
           Coin price provided by Chainlink

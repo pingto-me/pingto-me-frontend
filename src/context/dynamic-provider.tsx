@@ -4,7 +4,6 @@ import { http } from 'viem';
 import { sepolia } from 'viem/chains';
 import { PropsWithChildren } from 'react';
 import { createConfig, WagmiProvider } from 'wagmi';
-import { FlowWalletConnectors } from '@dynamic-labs/flow';
 import { EthereumWalletConnectors } from '@dynamic-labs/ethereum';
 import { DynamicContextProvider } from '@dynamic-labs/sdk-react-core';
 import { DynamicWagmiConnector } from '@dynamic-labs/wagmi-connector';
@@ -25,7 +24,7 @@ export default function DynamicProvider({ children }: PropsWithChildren) {
     <DynamicContextProvider
       settings={{
         environmentId: process.env.NEXT_PUBLIC_DYNAMIC_ENV_ID!,
-        walletConnectors: [EthereumWalletConnectors, FlowWalletConnectors],
+        walletConnectors: [EthereumWalletConnectors],
       }}
     >
       <WagmiProvider config={config}>
