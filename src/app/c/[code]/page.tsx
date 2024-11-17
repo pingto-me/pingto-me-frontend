@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { SupportChat } from '@pushprotocol/uiweb';
 import { useState, useEffect, useCallback } from 'react';
 
 import { Box, Grid, Chip, Stack, Button, Typography } from '@mui/material';
@@ -322,6 +323,19 @@ export default function Page({ params }: Props) {
               Certificate
             </Button>
           </Stack>
+
+          {/* <ChatUIProvider>
+            <ChatView
+              chatId="89f7b382b9b1496dca2b9a94ef87c80dd102db05dcb40b165fabfab28770fd55"
+              limit={10}
+              verificationFailModalPosition={MODAL_POSITION_TYPE.RELATIVE}
+              isConnected
+            />
+          </ChatUIProvider> */}
+
+          <SupportChat
+            supportAddress="0xd9c1CCAcD4B8a745e191b62BA3fcaD87229CB26d" // support address, this belongs to you
+          />
           {/* Description */}
           <Typography variant="body2" sx={{ color: 'text.secondary', mt: 2 }}>
             Don’t worry, ping is just saying hi to the cards
