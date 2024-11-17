@@ -2,7 +2,11 @@
 
 import { useState, useEffect, useCallback } from 'react';
 
-import { Box, Grid, Chip, Button, Typography } from '@mui/material';
+import { Box, Grid, Chip, Stack, Button, Typography } from '@mui/material';
+
+import { paths } from 'src/routes/paths';
+import { useRouter } from 'src/routes/hooks';
+import { RouterLink } from 'src/routes/components';
 
 import { redeemCard, getCardByCode } from 'src/rest-apis/card';
 
@@ -15,8 +19,6 @@ import ProcessingCard from 'src/components/ui-kit/card-processing';
 import { useProcessingModal } from 'src/components/modals/processing-modal';
 
 import { Card } from 'src/types/card';
-import { useRouter } from 'src/routes/hooks';
-import { paths } from 'src/routes/paths';
 
 type Props = {
   params: {
@@ -271,29 +273,55 @@ export default function Page({ params }: Props) {
             }}
           />
 
-          {/* Ping Button */}
-          <Button
-            variant="outlined"
-            sx={{
-              borderColor: '#d3d3d3',
-              color: '#000',
-              fontWeight: 600,
-              textTransform: 'none',
-              fontSize: '16px',
-              px: 4,
-              py: 1.5,
-              display: 'flex',
-              alignItems: 'center',
-              gap: 1,
-              '&:hover': {
-                borderColor: '#b3b3b3',
-              },
-            }}
-          >
-            <Iconify icon="fluent:flash-24-filled" width={20} height={20} />
-            Ping the cards
-          </Button>
+          <Stack spacing={3} direction="row">
+            {/* Ping Button */}
+            <Button
+              variant="outlined"
+              sx={{
+                borderColor: '#d3d3d3',
+                color: '#000',
+                fontWeight: 600,
+                textTransform: 'none',
+                fontSize: '16px',
+                px: 4,
+                py: 1.5,
+                display: 'flex',
+                alignItems: 'center',
+                gap: 1,
+                '&:hover': {
+                  borderColor: '#b3b3b3',
+                },
+              }}
+            >
+              <Iconify icon="fluent:flash-24-filled" width={20} height={20} />
+              Ping the cards
+            </Button>
 
+            <Button
+              component={RouterLink}
+              target="_blank"
+              href="https://testnet-scan.sign.global/attestation/onchain_evm_84532_0xda5"
+              variant="outlined"
+              sx={{
+                borderColor: '#d3d3d3',
+                color: '#000',
+                fontWeight: 600,
+                textTransform: 'none',
+                fontSize: '16px',
+                px: 4,
+                py: 1.5,
+                display: 'flex',
+                alignItems: 'center',
+                gap: 1,
+                '&:hover': {
+                  borderColor: '#b3b3b3',
+                },
+              }}
+            >
+              <Iconify icon="mingcute:certificate-fill" width={20} height={20} />
+              Certificate
+            </Button>
+          </Stack>
           {/* Description */}
           <Typography variant="body2" sx={{ color: 'text.secondary', mt: 2 }}>
             Don’t worry, ping is just saying hi to the cards

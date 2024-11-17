@@ -48,6 +48,8 @@
     "notistack": "^3.0.1",
     "nprogress": "^0.2.0",
     "numeral": "^2.0.6",
+    "pino": "^9.5.0",
+    "pino-pretty": "^13.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
